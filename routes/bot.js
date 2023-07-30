@@ -69,6 +69,8 @@ router.post('/like/:id', async (req, res) => {
         const theme = await Theme.findById(themeId);
         if (! theme) {
             return res.status(404).send('Theme not found.');
+        } else if(theme.userId.toString() === userId.toString()) {
+            return res.status(403).send('You cannot like your own theme.');
         }
 
         const existingLike = await Like.findOne({themeId, userId});
